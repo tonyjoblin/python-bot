@@ -11,9 +11,10 @@ class get_command_and_args_tests(unittest.TestCase):
 
 class robot_controller_tests(unittest.TestCase):
 
-    def test_returns_false_on_exit(self):
-        result = python_bot.robot_controller('exit')
-        self.assertEqual(result, False)
+    def test_enters_exit_state_on_exit_cmd(self):
+        initial_state = (python_bot.STATE_START)
+        next_state = python_bot.robot_controller(initial_state, 'exit')
+        self.assertEqual(python_bot.STATE_EXIT, next_state[0])
 
 
 def main():
