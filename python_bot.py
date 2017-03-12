@@ -102,9 +102,9 @@ def handle_right(initial_state, args, outputs):
 
 def handle_report(robot, args, outputs):
     if robot.state == STATE_PLACED:
-        outputs.write('{0}, {1}, {2}'.format(robot.x, robot.y, robot.facing))
+        outputs.write('{0}, {1}, {2}\n'.format(robot.x, robot.y, robot.facing))
     if robot.state == STATE_START:
-        outputs.write('in toy box')
+        outputs.write('in toy box\n')
     return robot
 
 def handle_exit(initial_state, args, outputs):
@@ -153,6 +153,7 @@ def robot_command_loop(inputs, outputs):
     state = Robot()
     for command in inputs:
         next_state = robot_controller(state, command, outputs)
+        outputs.flush()
         if next_state.state == STATE_EXIT:
             break
         state = next_state
