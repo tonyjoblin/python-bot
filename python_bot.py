@@ -107,6 +107,12 @@ def handle_report(robot, args, outputs):
         outputs.write('in toy box')
     return robot
 
+def handle_exit(initial_state, args, outputs):
+    next_state = copy_robot(initial_state)
+    next_state.state = STATE_EXIT
+    return next_state
+    
+
 def get_command_and_args(input):
     input = input.strip()
     pos = input.find(' ')
@@ -116,29 +122,31 @@ def get_command_and_args(input):
     args = input[pos + 1:]
     return command, args
 
+handlers = {
+    STATE_START: {
+        'exit': handle_exit,
+        'place': handle_place,
+        'report': handle_report
+    },
+    STATE_PLACED: {
+        'exit': handle_exit,
+        'place': handle_place,
+        'move': handle_move,
+        'left': handle_left,
+        'right': handle_right,
+        'report': handle_report
+    },
+    STATE_EXIT: {}
+    }
+
 def robot_controller(initial_state, input, outputs = None):
     command, args = get_command_and_args(input)
     next_state = initial_state
-    if initial_state.state == STATE_START:
-        if command == 'exit':
-            next_state = Robot(STATE_EXIT)
-        elif command == 'place':
-            next_state = handle_place(initial_state, args, outputs)
-        elif command == 'report':
-            next_state = handle_report(initial_state, args, outputs)
-    elif initial_state.state == STATE_PLACED:
-        if command == 'exit':
-            next_state = Robot(STATE_EXIT)
-        elif command == 'place':
-            next_state = handle_place(initial_state, args, outputs)
-        elif command == 'move':
-            next_state = handle_move(initial_state, args, outputs)
-        elif command == 'left':
-            next_state = handle_left(initial_state, args, outputs)
-        elif command == 'right':
-            next_state = handle_right(initial_state, args, outputs)
-        elif command == 'report':
-            next_state = handle_report(initial_state, args, outputs)
+
+    if command in handlers[initial_state.state]:
+        handler = handlers[initial_state.state][command]
+        next_state = handler(initial_state, args, outputs)
+    
     return next_state
 
 def robot_command_loop(inputs, outputs):
