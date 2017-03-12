@@ -153,7 +153,7 @@ def robot_command_loop(inputs, outputs):
     state = Robot()
     for command in inputs:
         next_state = robot_controller(state, command, outputs)
-        if next_state.state == STATE_EXIT: # exit state
+        if next_state.state == STATE_EXIT:
             break
         state = next_state
 

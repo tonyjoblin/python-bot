@@ -267,6 +267,40 @@ class robot_controller_tests(unittest.TestCase):
 
         self.assertEqual('2, 2, east', output.getvalue())
 
+class robot_command_loop_tests(unittest.TestCase):
+
+    def test_place_on_table_and_report(self):
+        inputs = io.StringIO('place 2,2,north\nreport')
+        outputs = io.StringIO()
+        
+        next_state = robot_command_loop(inputs, outputs)
+        
+        self.assertEqual('2, 2, north', outputs.getvalue())
+
+    def test_example_a(self):
+        inputs = io.StringIO('place 0,0,north\nmove\nreport')
+        outputs = io.StringIO()
+        
+        next_state = robot_command_loop(inputs, outputs)
+        
+        self.assertEqual('0, 1, north', outputs.getvalue())
+
+    def test_example_b(self):
+        inputs = io.StringIO('place 0,0,north\nleft\nreport')
+        outputs = io.StringIO()
+        
+        next_state = robot_command_loop(inputs, outputs)
+        
+        self.assertEqual('0, 0, west', outputs.getvalue())
+
+    def test_example_c(self):
+        inputs = io.StringIO('place 1,2,east\nmove\nmove\nleft\nmove\nreport')
+        outputs = io.StringIO()
+        
+        next_state = robot_command_loop(inputs, outputs)
+        
+        self.assertEqual('3, 3, north', outputs.getvalue())
+
 def main():
     unittest.main()
 
