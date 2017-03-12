@@ -1,6 +1,7 @@
 import unittest
 import python_bot
 from python_bot import *
+import io
 
 class get_command_and_args_tests(unittest.TestCase):
 
@@ -249,6 +250,22 @@ class robot_controller_tests(unittest.TestCase):
         self.assertEqual(None, next_state.x)
         self.assertEqual(None, next_state.y)
         self.assertEqual(None, next_state.facing)
+
+    def test_report_when_off_table(self):
+        initial_state = Robot(STATE_START)
+        output = io.StringIO()
+        
+        robot_controller(initial_state, 'report', output)
+
+        self.assertEqual('in toy box', output.getvalue())
+
+    def test_report_when_on_table(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'east')
+        output = io.StringIO()
+        
+        robot_controller(initial_state, 'report', output)
+
+        self.assertEqual('2, 2, east', output.getvalue())
 
 def main():
     unittest.main()

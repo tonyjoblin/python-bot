@@ -100,6 +100,13 @@ def handle_right(initial_state, args, outputs):
         return initial_state
     return next_state
 
+def handle_report(robot, args, outputs):
+    if robot.state == STATE_PLACED:
+        outputs.write('{0}, {1}, {2}'.format(robot.x, robot.y, robot.facing))
+    if robot.state == STATE_START:
+        outputs.write('in toy box')
+    return robot
+
 def get_command_and_args(input):
     input = input.strip()
     pos = input.find(' ')
@@ -117,6 +124,8 @@ def robot_controller(initial_state, input, outputs = None):
             next_state = Robot(STATE_EXIT)
         elif command == 'place':
             next_state = handle_place(initial_state, args, outputs)
+        elif command == 'report':
+            next_state = handle_report(initial_state, args, outputs)
     elif initial_state.state == STATE_PLACED:
         if command == 'exit':
             next_state = Robot(STATE_EXIT)
@@ -128,6 +137,8 @@ def robot_controller(initial_state, input, outputs = None):
             next_state = handle_left(initial_state, args, outputs)
         elif command == 'right':
             next_state = handle_right(initial_state, args, outputs)
+        elif command == 'report':
+            next_state = handle_report(initial_state, args, outputs)
     return next_state
 
 def robot_command_loop(inputs, outputs):
