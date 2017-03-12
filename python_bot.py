@@ -64,6 +64,42 @@ def handle_move(initial_state, args, outputs):
         return initial_state
     return next_state
 
+def handle_left(initial_state, args, outputs):
+    if initial_state.state != STATE_PLACED:
+        return initial_state
+
+    next_state = copy_robot(initial_state)
+    if next_state.facing == 'north':
+        next_state.facing = 'west'
+    elif next_state.facing == 'west':
+        next_state.facing = 'south'
+    elif next_state.facing == 'south':
+        next_state.facing = 'east'
+    elif next_state.facing == 'east':
+        next_state.facing = 'north'
+    
+    if not is_valid_state(next_state):
+        return initial_state
+    return next_state
+
+def handle_right(initial_state, args, outputs):
+    if initial_state.state != STATE_PLACED:
+        return initial_state
+
+    next_state = copy_robot(initial_state)
+    if next_state.facing == 'north':
+        next_state.facing = 'east'
+    elif next_state.facing == 'east':
+        next_state.facing = 'south'
+    elif next_state.facing == 'south':
+        next_state.facing = 'west'
+    elif next_state.facing == 'west':
+        next_state.facing = 'north'
+    
+    if not is_valid_state(next_state):
+        return initial_state
+    return next_state
+
 def get_command_and_args(input):
     input = input.strip()
     pos = input.find(' ')
@@ -88,6 +124,10 @@ def robot_controller(initial_state, input, outputs = None):
             next_state = handle_place(initial_state, args, outputs)
         elif command == 'move':
             next_state = handle_move(initial_state, args, outputs)
+        elif command == 'left':
+            next_state = handle_left(initial_state, args, outputs)
+        elif command == 'right':
+            next_state = handle_right(initial_state, args, outputs)
     return next_state
 
 def robot_command_loop(inputs, outputs):

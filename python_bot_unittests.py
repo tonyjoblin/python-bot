@@ -150,6 +150,106 @@ class robot_controller_tests(unittest.TestCase):
         
         self.assertEqual(STATE_START, next_state.state)
 
+    def test_facing_north_turn_left(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'north')
+        
+        next_state = robot_controller(initial_state, 'left')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('west', next_state.facing)
+
+    def test_facing_north_turn_right(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'north')
+        
+        next_state = robot_controller(initial_state, 'right')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('east', next_state.facing)
+
+    def test_facing_west_turn_left(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'west')
+        
+        next_state = robot_controller(initial_state, 'left')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('south', next_state.facing)
+
+    def test_facing_west_turn_right(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'west')
+        
+        next_state = robot_controller(initial_state, 'right')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('north', next_state.facing)
+
+    def test_facing_east_turn_left(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'east')
+        
+        next_state = robot_controller(initial_state, 'left')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('north', next_state.facing)
+
+    def test_facing_east_turn_right(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'east')
+        
+        next_state = robot_controller(initial_state, 'right')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('south', next_state.facing)
+
+    def test_facing_south_turn_left(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'south')
+        
+        next_state = robot_controller(initial_state, 'left')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('east', next_state.facing)
+
+    def test_facing_south_turn_right(self):
+        initial_state = Robot(STATE_PLACED, 2, 2, 'south')
+        
+        next_state = robot_controller(initial_state, 'right')
+        
+        self.assertEqual(STATE_PLACED, next_state.state)
+        self.assertEqual(2, next_state.x)
+        self.assertEqual(2, next_state.y)
+        self.assertEqual('west', next_state.facing)
+
+    def test_ignore_left_when_off_table(self):
+        initial_state = Robot(STATE_START)
+        
+        next_state = robot_controller(initial_state, 'left')
+        
+        self.assertEqual(STATE_START, next_state.state)
+        self.assertEqual(None, next_state.x)
+        self.assertEqual(None, next_state.y)
+        self.assertEqual(None, next_state.facing)
+
+    def test_ignore_right_when_off_table(self):
+        initial_state = Robot(STATE_START)
+        
+        next_state = robot_controller(initial_state, 'right')
+        
+        self.assertEqual(STATE_START, next_state.state)
+        self.assertEqual(None, next_state.x)
+        self.assertEqual(None, next_state.y)
+        self.assertEqual(None, next_state.facing)
+
 def main():
     unittest.main()
 
